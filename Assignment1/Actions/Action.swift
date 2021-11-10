@@ -22,3 +22,7 @@ struct TaskListAction: Action {
 struct NewTaskAction: Action {
     var newTask: Task
 }
+
+struct UpdateTaskAction: Action {
+    var selectedTask: Task
+}

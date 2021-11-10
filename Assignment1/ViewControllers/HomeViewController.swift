@@ -58,6 +58,13 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         }
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let cell = tableView.cellForRow(at: indexPath) {
+            store.dispatch(UpdateTaskAction(selectedTask: Task(title: (cell.textLabel?.text)!, dateTime: (cell.detailTextLabel?.text)!)))
+            performSegue(withIdentifier: "newTask", sender: cell)
+        }
+    }
 }
 
 extension HomeViewController: StoreSubscriber {
