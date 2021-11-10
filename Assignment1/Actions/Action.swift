@@ -12,6 +12,10 @@ struct SignupAction: Action {
   let user: User
 }
 
+struct LoginAction: Action {
+  let user: User
+}
+
 struct TaskListAction: Action {
 }
 

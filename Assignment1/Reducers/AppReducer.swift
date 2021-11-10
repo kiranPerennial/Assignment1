@@ -30,8 +30,11 @@ func appReducer(action: Action, state: AppState?) -> AppState {
                 }
             }
         }
+    case let newTask as LoginAction:
+        state.user = newTask.user
     case let newTask as SignupAction:
         ServiceRequest.store(newTask.user, as: "TaskList.json")
+        state.user = newTask.user
     default: break
     }
     return state
