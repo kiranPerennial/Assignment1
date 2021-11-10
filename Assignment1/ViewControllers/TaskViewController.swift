@@ -1,10 +1,3 @@
-//
-//  TaskViewController.swift
-//  Assignment1
-//
-//  Created by APPLE on 08/11/21.
-//
-
 import UIKit
 import ReSwift
 
@@ -14,9 +7,21 @@ class TaskViewController: UIViewController {
     @IBOutlet weak var dateTimeTextField: UITextField!
     @IBOutlet weak var titleTextField: UITextField!
     
+    var selectedTask: Task?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        store.subscribe(self)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        store.unsubscribe(self)
     }
     
     func setupUI() {
@@ -39,7 +44,7 @@ class TaskViewController: UIViewController {
 
     @IBAction func actionSaveTask(_ sender: Any) {
         let task = Task(title: titleTextField.text ?? "", dateTime: dateTimeTextField.text ?? "")
-        store.dispatch(NewTaskAction(newTask: task))
+        store.dispatch(AddUpdateTaskAction(newTask: task, selectedTask: selectedTask))
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -58,10 +63,19 @@ extension TaskViewController: UITextFieldDelegate {
         return true
     }
     
-    func textField(_ textField: UITextField, F range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         self.saveButton.isEnabled =  self.validateFields(text: titleTextField.text) && self.validateFields(text: dateTimeTextField.text)
         return true
     }
 }
+
+extension TaskViewController: StoreSubscriber {
+  func newState(state: AppState) {
+    self.selectedTask = state.selectedTask
+    self.titleTextField.text = state.selectedTask?.title
+    self.dateTimeTextField.text = state.selectedTask?.dateTime
+  }
+}
+
 
 

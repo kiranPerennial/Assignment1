@@ -1,8 +1,3 @@
-//
-//  Extension.swift
-//  TodoApp
-//
-
 import Foundation
 import UIKit
 
@@ -33,6 +28,7 @@ extension UITextField {
 }
 
 extension String {
+
     func isValidEmail() -> Bool {
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
         let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
@@ -41,6 +37,7 @@ extension String {
     
     func isValidPassword() -> Bool {
         let passwordReg = "^.{5,}$";
+        // Add Password regex "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$" .. Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character:
         let passwordPred = NSPredicate(format:"SELF MATCHES %@", passwordReg)
         return passwordPred.evaluate(with: self)
     }

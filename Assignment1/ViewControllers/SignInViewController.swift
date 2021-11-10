@@ -1,10 +1,3 @@
-//
-//  SignInViewController.swift
-//  Assignment1
-//
-//  Created by APPLE on 08/11/21.
-//
-
 import UIKit
 
 class SignInViewController: UIViewController {
@@ -12,6 +5,7 @@ class SignInViewController: UIViewController {
     @IBOutlet weak var signupButton: UIButton!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
+    @IBOutlet weak var errorLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,6 +16,8 @@ class SignInViewController: UIViewController {
         super.viewWillDisappear(animated)
         self.emailTextField.text = ""
         self.passwordTextField.text = ""
+        errorLabel.text = ""
+        signupButton.isEnabled = false
         self.view.endEditing(true)
     }
     
@@ -33,8 +29,18 @@ class SignInViewController: UIViewController {
     }
     
     @IBAction func signUpAction(_ sender: Any) {
-        store.dispatch(SignupAction(user: User(email: emailTextField.text!, password: passwordTextField.text!, taskList: [])))
-        navigationController?.popViewController(animated: true)
+        if let allUser = ServiceRequest.retrieve("NewTaskList.json", as: [User].self){
+            let user = allUser.filter{ $0.email == emailTextField.text }
+            if user.count == 0 {
+                store.dispatch(SignupAction(user: User(email: emailTextField.text!, password: passwordTextField.text!, taskList: [])))
+                navigationController?.popViewController(animated: true)
+            } else {
+                emailTextField.text = ""
+                passwordTextField.text = ""
+                errorLabel.text = "* Please Enter Valid Email And Password"
+                signupButton.isEnabled = false
+            }
+        }
     }
     
     func validateFields(textFieldType:TextFieldType, text:String?) -> Bool {
