@@ -1,7 +1,7 @@
 import UIKit
 
 class SignInViewController: UIViewController {
-
+    
     @IBOutlet weak var signupButton: UIButton!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
@@ -23,7 +23,7 @@ class SignInViewController: UIViewController {
     
     func setupUI() {
         self.signupButton.isEnabled = false
-        self.title = "Log In"
+        self.title = "Sign Up"
         self.emailTextField.delegate = self
         self.passwordTextField.delegate = self
     }

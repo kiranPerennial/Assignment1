@@ -1,8 +1,6 @@
 import Foundation
 public class ServiceRequest {
-    
-    fileprivate init() { }
-    
+
     static fileprivate func getURL() -> URL {
         if let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
             return url

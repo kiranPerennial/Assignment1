@@ -2,7 +2,7 @@ import UIKit
 import ReSwift
 
 class TaskViewController: UIViewController {
-
+    
     @IBOutlet weak var saveButton: UIButton!
     @IBOutlet weak var dateTimeTextField: UITextField!
     @IBOutlet weak var titleTextField: UITextField!
@@ -25,7 +25,7 @@ class TaskViewController: UIViewController {
     }
     
     func setupUI() {
-        self.title = "Add Todo"
+        self.title = "TODO"
         self.saveButton.isEnabled = false
         self.dateTimeTextField.setInputViewDatePicker(target: self, selector: #selector(actionDone))
         self.dateTimeTextField.delegate = self
@@ -70,12 +70,9 @@ extension TaskViewController: UITextFieldDelegate {
 }
 
 extension TaskViewController: StoreSubscriber {
-  func newState(state: AppState) {
-    self.selectedTask = state.selectedTask
-    self.titleTextField.text = state.selectedTask?.title
-    self.dateTimeTextField.text = state.selectedTask?.dateTime
-  }
+    func newState(state: AppState) {
+        self.selectedTask = state.selectedTask
+        self.titleTextField.text = state.selectedTask?.title
+        self.dateTimeTextField.text = state.selectedTask?.dateTime
+    }
 }
-
-
-
