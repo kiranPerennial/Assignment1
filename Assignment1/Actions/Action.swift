@@ -9,8 +9,7 @@ struct LoginAction: Action {
   let user: User
 }
 
-struct TaskListAction: Action {
-}
+struct TaskListAction: Action { }
 
 struct AddUpdateTaskAction: Action {
     var newTask: Task
@@ -21,11 +20,8 @@ struct UpdateTaskAction: Action {
     var selectedTask: Task
 }
 
-struct CreateTaskAction: Action {
-    
-}
+struct CreateTaskAction: Action { }
 
 struct DeleteTaskAction: Action {
     var deleteTask: Task
 }
-

@@ -2,13 +2,12 @@ import UIKit
 import ReSwift
 
 class HomeViewController: UIViewController {
-
+    
     @IBOutlet weak var tableView: UITableView!
     var user: User?
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -21,7 +20,7 @@ class HomeViewController: UIViewController {
         super.viewDidDisappear(animated)
         store.unsubscribe(self)
     }
-
+    
     func setupUI() {
         self.title = "My Tasks"
         self.navigationController?.navigationBar.isHidden = false
@@ -29,7 +28,7 @@ class HomeViewController: UIViewController {
         let logoutBarButtonItem = UIBarButtonItem(title: "Logout", style: .done, target: self, action: #selector(actionLogoutUser))
         self.navigationItem.leftBarButtonItem  = logoutBarButtonItem
     }
-
+    
     //MARK: - Button Action
     @objc func actionLogoutUser() {
         self.navigationController?.popViewController(animated: true)
@@ -74,8 +73,8 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
 }
 
 extension HomeViewController: StoreSubscriber {
-  func newState(state: AppState) {
-    self.user = state.user
-    tableView.reloadData()
-  }
+    func newState(state: AppState) {
+        self.user = state.user
+        tableView.reloadData()
+    }
 }
