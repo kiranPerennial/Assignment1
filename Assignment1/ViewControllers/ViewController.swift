@@ -1,8 +1,10 @@
 import UIKit
+import ReSwift
 
-class SignInViewController: UIViewController {
-
-    @IBOutlet weak var signupButton: UIButton!
+class ViewController: UIViewController {
+    
+    @IBOutlet weak var logInButton: UIButton!
+    @IBOutlet weak var signUpButton: UIButton!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var errorLabel: UILabel!
@@ -16,29 +18,29 @@ class SignInViewController: UIViewController {
         super.viewWillDisappear(animated)
         self.emailTextField.text = ""
         self.passwordTextField.text = ""
+        self.logInButton.isEnabled = false
         errorLabel.text = ""
-        signupButton.isEnabled = false
         self.view.endEditing(true)
     }
     
     func setupUI() {
-        self.signupButton.isEnabled = false
+        self.logInButton.isEnabled = false
         self.title = "Log In"
         self.emailTextField.delegate = self
         self.passwordTextField.delegate = self
     }
-    
-    @IBAction func signUpAction(_ sender: Any) {
-        if let allUser = ServiceRequest.retrieve("NewTaskList.json", as: [User].self){
-            let user = allUser.filter{ $0.email == emailTextField.text }
-            if user.count == 0 {
-                store.dispatch(SignupAction(user: User(email: emailTextField.text!, password: passwordTextField.text!, taskList: [])))
-                navigationController?.popViewController(animated: true)
+
+    @IBAction func actionLogin(_ sender: Any) {
+        if let allUser = ServiceRequest.retrieve("NewTaskList.json", as: [User].self) {
+            let user = allUser.filter{ $0.email == emailTextField.text && $0.password == passwordTextField.text }
+            if user.count > 0 {
+                store.dispatch(LoginAction(user: user[0]))
+                performSegue(withIdentifier: "showTasks", sender: sender)
             } else {
                 emailTextField.text = ""
                 passwordTextField.text = ""
                 errorLabel.text = "* Please Enter Valid Email And Password"
-                signupButton.isEnabled = false
+                logInButton.isEnabled = false
             }
         }
     }
@@ -53,9 +55,9 @@ class SignInViewController: UIViewController {
     }
 }
 
-extension SignInViewController: UITextFieldDelegate {
+extension ViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        signupButton.isEnabled = validateFields(textFieldType: .email, text: emailTextField.text) && validateFields(textFieldType: .password, text: passwordTextField.text)
+        logInButton.isEnabled = validateFields(textFieldType: .email, text: emailTextField.text) && validateFields(textFieldType: .password, text: passwordTextField.text)
         return true
     }
     
@@ -64,3 +66,4 @@ extension SignInViewController: UITextFieldDelegate {
         return true
     }
 }
+

@@ -1,10 +1,3 @@
-//
-//  LoginAction.swift
-//  Assignment1
-//
-//  Created by APPLE on 09/11/21.
-//
-
 import Foundation
 import ReSwift
 
@@ -12,9 +5,27 @@ struct SignupAction: Action {
   let user: User
 }
 
+struct LoginAction: Action {
+  let user: User
+}
+
 struct TaskListAction: Action {
 }
 
-struct NewTaskAction: Action {
+struct AddUpdateTaskAction: Action {
     var newTask: Task
+    var selectedTask: Task?
 }
+
+struct UpdateTaskAction: Action {
+    var selectedTask: Task
+}
+
+struct CreateTaskAction: Action {
+    
+}
+
+struct DeleteTaskAction: Action {
+    var deleteTask: Task
+}
+

@@ -1,10 +1,3 @@
-//
-//  HomeViewController.swift
-//  Assignment1
-//
-//  Created by APPLE on 08/11/21.
-//
-
 import UIKit
 import ReSwift
 
@@ -19,11 +12,13 @@ class HomeViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         store.subscribe(self)
         store.dispatch(TaskListAction())
     }
     
     override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
         store.unsubscribe(self)
     }
 
@@ -41,6 +36,7 @@ class HomeViewController: UIViewController {
     }
     
     @IBAction func actionCreateNewTask(_ sender: Any) {
+        store.dispatch(CreateTaskAction())
         performSegue(withIdentifier: "newTask", sender: sender)
     }
 }
@@ -57,6 +53,23 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
             cell.detailTextLabel?.text = taskList[indexPath.row].dateTime
         }
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let cell = tableView.cellForRow(at: indexPath) {
+            store.dispatch(UpdateTaskAction(selectedTask: Task(title: (cell.textLabel?.text)!, dateTime: (cell.detailTextLabel?.text)!)))
+            performSegue(withIdentifier: "newTask", sender: cell)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            if let cell = tableView.cellForRow(at: indexPath) {
+                user?.taskList.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .fade)
+                store.dispatch(DeleteTaskAction(deleteTask: Task(title: (cell.textLabel?.text)!, dateTime: (cell.detailTextLabel?.text)!)))
+            }
+        }
     }
 }
 
