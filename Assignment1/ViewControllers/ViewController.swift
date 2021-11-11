@@ -19,7 +19,7 @@ class ViewController: UIViewController {
         self.emailTextField.text = ""
         self.passwordTextField.text = ""
         self.logInButton.isEnabled = false
-        errorLabel.text = ""
+        self.errorLabel.text = ""
         self.view.endEditing(true)
     }
     
